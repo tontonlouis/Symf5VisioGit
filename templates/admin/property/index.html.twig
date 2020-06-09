@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Administration' %}
+ 
+{% block body %}
+
+
+
+
+<div class="container">
+     <h2> Administration des biens </h2>
+
+     {% for message in app.flashes("success") %}
+
+          <div class="alert alert-success">
+               {{ message }}
+          </div>
+
+     {% endfor %}
+
+     {% for message in app.flashes("error") %}
+
+          <div class="alert alert-error">
+               {{ message }}
+          </div>
+
+     {% endfor %}
+
+     <a href="{{path('admin_property_create') }}" class="btn btn-success">Ajouter</a>
+
+
+     <table class="table table-striped">
+          <thead>
+               <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>DATE</th>
+                    <th>ACTION</th>
+               </tr>
+          </thead>
+          <tbody>
+               {% for property in properties %}       
+                    <tr>
+                         <td> {{ property.id }} </td>
+                         <td> {{ property.name }} </td>
+                         <td> {{ property.createdAt|format_datetime() }}</td>
+                         <td>
+                              <div class="input-group">
+                                   <a href="{{ path("admin_property_edit", { id: property.id }) }}" class="btn btn-secondary">Éditer</a>
+                                   <form method="post" action="{{ path('admin_property_delete', {id:property.id})}}" onSubmit="return confirm('Êtes-vous sùr de vouloir supprimer')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ property.id) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="btn btn-danger">Supprimer</button>
+                                   </form>
+                              </div>
+
+                         </td>
+                    </tr>
+               {% endfor %}   
+          </tbody>
+     </table>
+</div>
+
+{% endblock %}
