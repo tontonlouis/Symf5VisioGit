@@ -3,11 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
-use Doctrine\ORM\Mapping as ORM;
+
 use Cocur\Slugify\Slugify;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
+ * @UniqueEntity("name")
  */
 class Property
 {
@@ -20,6 +25,13 @@ class Property
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min=5,
+     *      max=15,
+     *      minMessage= "La longeur minimum est de {{ limit }} caractère",
+     *      maxMessage= "La lingueur maximum est de {{ limit }} caractère"
+     *      
+     * )
      */
     private $name;
 
@@ -62,7 +74,11 @@ class Property
     private $city;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=10)
+     * @Assert\Regex(
+     *      pattern = "/^[0-9]{5}$/",
+     *      message= "Le code postal dois être au bon format"
+     * )
      */
     private $postal_code;
 

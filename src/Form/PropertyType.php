@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Property;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,19 +16,35 @@ class PropertyType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                "required" => true,
+                "required" => false,
                 "attr" => [
                     'placeholder' => "Saississez le nom du bien"
                 ]
             ])
-            ->add('description')
-            ->add('surface')
-            ->add('room')
-            ->add('floor')
-            ->add('price')
-            ->add('address')
-            ->add('city')
-            ->add('postalCode')
+            ->add('description', TextareaType::class, [
+                "required" => false
+            ])
+            ->add('surface', IntegerType::class, [
+                "required" => false
+            ] )
+            ->add('room', IntegerType::class, [
+                "required" => false
+            ])
+            ->add('floor', IntegerType::class, [
+                "required" => false
+            ])
+            ->add('price', IntegerType::class, [
+                "required" => false
+            ])
+            ->add('address', TextType::class, [
+                "required" => false
+            ])
+            ->add('city', TextType::class, [
+                "required" => false
+            ])
+            ->add('postalCode', TextType::class, [
+                "required" => false
+            ])
             ->add('sold')
         ;
     }
