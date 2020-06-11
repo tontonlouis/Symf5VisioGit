@@ -9,30 +9,14 @@
 		<h2>Acheter un bien</h2>
 
 		<div class="row">
-			{% for property in properties %}
-				<div class="col-md-4">
-					<div class="card mr-auto mt-3" style="width: 20rem;">
-						{# <img src="..." class="card-img-top" alt="..."> #}
-						<div class="card-body">
-							<h5 class="card-title">
-								<a href="{{path('property_show', { id: property.id, slug: property.slug }) }}">
-									{{ property.name }}
-								</a>
-							</h5>
-							<p class="card-text">
-								{{ property.description }}
-							</p>
-						</div>
-						<div class="card-footer">
-							<p class="text-small text-right">
-								{{ property.price }}
-								€
-							</p>
-						</div>
-					</div>
-				</div>
+			{% for property in pagination %}
+				{% include "property/_card.html.twig" %}
 			{% endfor %}
 		</div>
+		<div class="pagination">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+
 	</div>
 
 

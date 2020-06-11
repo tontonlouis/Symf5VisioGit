@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Property;
+use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,12 +12,18 @@ class HomeController extends AbstractController
 {
 
     /**
-     * @Route("/home", name="home")
+     * @Route("/", name="home")
      */
     public function home(): Response
     {
+        
+        $repository = $this->getDoctrine()->getRepository(Property::class);
+        
+        $properties = $repository->findLastProperty();
+
         return $this->render("home/home.html.twig", [
-            "current_menu" => "home"
+            "current_menu" => "home",
+            "properties" => $properties
         ]);
         
     }
