@@ -29,7 +29,7 @@ class Property
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(
      *      min=5,
-     *      max=15,
+     *      max=25,
      *      minMessage= "La longeur minimum est de {{ limit }} caractère",
      *      maxMessage= "La lingueur maximum est de {{ limit }} caractère"
      *      
