@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Option;
 use App\Entity\PropertySearch;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,6 +32,13 @@ class PropertySearchType extends AbstractType
                         'placeholder'  => 'Surface minimale'
                     ]
                ])
+               ->add('options', EntityType::class, [
+                    'label' => false,
+                    'class' => Option::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'required' => false
+               ])
                ->add('submit', SubmitType::class, [
                     'label' => "Rechercher"
                ]);
@@ -39,7 +47,8 @@ class PropertySearchType extends AbstractType
      public function configureOptions(OptionsResolver $resolver)
      {
           $resolver->setDefaults([
-               'data_class' => PropertySearch::class
+               'data_class' => PropertySearch::class,
+               'csrf_protection' => false,
           ]);
      }
 }
