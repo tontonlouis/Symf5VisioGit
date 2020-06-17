@@ -5,16 +5,20 @@ namespace App\Entity;
 use App\Repository\PropertyRepository;
 
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
  * @UniqueEntity("name")
+ * @Vich\Uploadable()
  */
 class Property
 {
@@ -99,13 +103,29 @@ class Property
      */
     private $options;
 
+    /**
+     * @var File|null
+     * @Assert\Image(
+     *     mimeTypes="image/jpeg")
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filename;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->options = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -279,4 +299,45 @@ class Property
 
         return $this;
     }
+
+    /**
+     * @return File|null
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File|null $imageFile
+     * @return Property
+     */
+    public function setImageFile(?File $imageFile): Property
+    {
+        $this->imageFile = $imageFile;
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param mixed $filename
+     * @return Property
+     */
+    public function setFilename($filename)
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+
 }

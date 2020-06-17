@@ -3,15 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome!
-			{% endblock %}
+			{% block title %}Mon Agence{% endblock %}
 		</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+		{{ encore_entry_link_tags('style')  }}
 		{% block stylesheets %}{% endblock %}
 	</head>
 	<body>
-
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="{{ path('home') }}">Mon Agence</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,6 +21,9 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item {% if current_menu is defined and current_menu == 'buy' %} active {% endif %}">
 						<a class="nav-link" href="{{ path('property_index') }}">Acheter</a>
+					</li>
+					<li class="nav-item {% if current_menu is defined and current_menu == 'contact' %} active {% endif %}">
+						<a class="nav-link" href="{{ path('home_contact') }}">Nous contacter</a>
 					</li>
 					{% if is_granted("ROLE_ADMIN") %}
 						<li class="nav-item {% if current_menu is defined and current_menu == 'admin' %} active {% endif %}">
@@ -36,10 +38,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+		{{ encore_entry_script_tags('app') }}
 		{% block javascripts %}{% endblock %}
-        <script>
-            $('select').select2();
-        </script>
-
 	</body>
 </html>

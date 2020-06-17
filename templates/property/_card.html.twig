@@ -1,7 +1,11 @@
 <div class="col-md-4">
 	<div
 		class="card mr-auto mt-3" style="width: 20rem;">
-		{# <img src="..." class="card-img-top" alt="..."> #}
+		{% if property.filename %}
+			<img src="{{ vich_uploader_asset(property, 'imageFile' )|imagine_filter('thumb') }}" class="card-img-top" alt="">
+		{% else %}
+			<img src="{{ asset('images/properties/empty.jpg') | imagine_filter('thumb') }}" class="card-img-top" alt="">
+		{% endif %}
 		<div class="card-body">
 			<h5 class="card-title">
 				<a href="{{path('property_show', { id: property.id, slug: property.slug }) }}">

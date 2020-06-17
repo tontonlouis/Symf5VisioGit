@@ -7,10 +7,13 @@ use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class AdminPropertyController extends AbstractController
 {
@@ -66,7 +69,7 @@ class AdminPropertyController extends AbstractController
      /**
       * @Route("/admin/edit/{id}" , name="admin_property_edit")
       */
-     public function edit(Property $property, Request $request)
+     public function edit(Property $property, Request $request, CacheManager $cacheManager, UploaderHelper $helper)
      {
 
           $form = $this->createForm(PropertyType::class, $property);
