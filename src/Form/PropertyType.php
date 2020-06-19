@@ -7,6 +7,7 @@ use App\Entity\Property;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -49,8 +50,9 @@ class PropertyType extends AbstractType
                 "required" => false
             ])
             ->add('sold')
-            ->add('imageFile', FileType::class, [
-                'required' => false
+            ->add('pictureFiles', FileType::class, [
+                'required' => false,
+                'multiple' => true
             ])
             ->add('options', EntityType::class, [
                 'class' => Option::class,
@@ -58,6 +60,8 @@ class PropertyType extends AbstractType
                 'multiple' => true,
                 'required' => false,
             ])
+            ->add('lat', HiddenType::class)
+            ->add('lng', HiddenType::class)
         ;
     }
 

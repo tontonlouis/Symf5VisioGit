@@ -1,8 +1,11 @@
 <div class="col-md-4">
 	<div
 		class="card mr-auto mt-3" style="width: 20rem;">
-		{% if property.filename %}
-			<img src="{{ vich_uploader_asset(property, 'imageFile' )|imagine_filter('thumb') }}" class="card-img-top" alt="">
+		{% if property.pictures %}
+			{% for picture in property.pictures %}
+				<img src="{{ vich_uploader_asset(picture, 'imageFile' )|imagine_filter('thumb') }}"
+					 class="card-img-top" alt="">
+			{% endfor %}
 		{% else %}
 			<img src="{{ asset('images/properties/empty.jpg') | imagine_filter('thumb') }}" class="card-img-top" alt="">
 		{% endif %}

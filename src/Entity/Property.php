@@ -12,13 +12,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
  * @UniqueEntity("name")
- * @Vich\Uploadable()
  */
 class Property
 {
@@ -104,27 +102,62 @@ class Property
     private $options;
 
     /**
-     * @var File|null
-     * @Assert\Image(
-     *     mimeTypes="image/jpeg")
-     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
-     */
-    private $imageFile;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $filename;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="property", orphanRemoval=true, cascade={"persist"})
+     */
+    private $pictures;
+
+    /**
+     * @Assert\All({
+     *      @Assert\Image(mimeTypes="image/jpeg")
+     * })
+     */
+    private $pictureFiles;
+
+    /**
+     * @ORM\Column(type="float", scale=4, precision=6)
+     */
+    private $lat;
+
+    /**
+     * @ORM\Column(type="float", scale=4, precision=7)
+     */
+    private $lng;
+
+    /**
+     * @return mixed
+     */
+    public function getPictureFiles()
+    {
+        return $this->pictureFiles;
+    }
+
+    /**
+     * @param mixed $pictureFiles
+     * @return Property
+     */
+    public function setPictureFiles($pictureFiles)
+    {
+        foreach ($pictureFiles as $pictureFile)
+        {
+            $picture = new Picture();
+            $picture->setImageFile($pictureFile);
+            $this->addPicture($picture);
+        }
+
+        $this->pictureFiles = $pictureFiles;
+        return $this;
+    }
 
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->options = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -301,41 +334,57 @@ class Property
     }
 
     /**
-     * @return File|null
+     * @return Collection|Picture[]
      */
-    public function getImageFile(): ?File
+    public function getPictures(): Collection
     {
-        return $this->imageFile;
+        return $this->pictures;
     }
 
-    /**
-     * @param File|null $imageFile
-     * @return Property
-     */
-    public function setImageFile(?File $imageFile): Property
+    public function addPicture(Picture $picture): self
     {
-        $this->imageFile = $imageFile;
-        if ($this->imageFile instanceof UploadedFile) {
-            $this->updated_at = new \DateTime('now');
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setProperty($this);
         }
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFilename()
+    public function removePicture(Picture $picture): self
     {
-        return $this->filename;
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getProperty() === $this) {
+                $picture->setProperty(null);
+            }
+        }
+
+        return $this;
     }
 
-    /**
-     * @param mixed $filename
-     * @return Property
-     */
-    public function setFilename($filename)
+    public function getLat(): ?float
     {
-        $this->filename = $filename;
+        return $this->lat;
+    }
+
+    public function setLat(float $lat): self
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(float $lng): self
+    {
+        $this->lng = $lng;
+
         return $this;
     }
 

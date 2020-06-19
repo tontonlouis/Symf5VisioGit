@@ -1,18 +1,36 @@
-      {{ form_start(form) }}
-          <div class="row">
-               <div class="col-md-10">
-                    {{form_row(form.name)}}
-               </div>
-               <div class="col-md-2">
-                    {{form_row(form.sold)}}
-               </div>
-          </div>
-          <div class="row">
-               <div class="col-md-12">
-                    {{form_row(form.description)}}
-               </div>
-          </div>
-          <div class="row">
+<div class="col-md-5">
+    <div class="row flex">
+        {% if property.pictures %}
+            {% for picture in property.pictures %}
+                <div class="col">
+                    <img src="{{ vich_uploader_asset(picture, 'imageFile')|imagine_filter('thumb') }}" alt="">
+                    <form method="post" action="{{ path('admin.picture.delete', {id:picture.id}) }}"
+                          onSubmit="return confirm('Êtes-vous sùr de vouloir supprimer')">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ picture.id) }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="supprimer" class="btn btn-danger">
+                    </form>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-5">
+        {{ form_row(form.name) }}
+    </div>
+
+    <div class="col-md-2">
+        {{ form_row(form.sold) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.description) }}
+    </div>
+</div>
+<div class="row">
                <div class="col-md-3">
                     {{form_row(form.surface)}}
                     </div>
@@ -40,7 +58,7 @@
           </div>
           <div class="row">
               <div class="col-md-6">
-                  {{ form_row(form.imageFile) }}
+                  {{ form_row(form.pictureFiles) }}
               </div>
                <div class="col-md-6">
                     {{ form_row(form.options) }}
