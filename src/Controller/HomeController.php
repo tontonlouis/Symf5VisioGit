@@ -16,14 +16,25 @@ class HomeController extends AbstractController
 {
 
     /**
+     * @var PropertyRepository
+     */
+    private $repository;
+
+    public function __construct(PropertyRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * @Route("/", name="home")
      */
     public function home(): Response
     {
         
-        $repository = $this->getDoctrine()->getRepository(Property::class);
-        
-        $properties = $repository->findLastProperty();
+        /**
+         * @var Property[]
+         */
+        $properties = $this->repository->findLastProperty();
 
         return $this->render("home/home.html.twig", [
             "current_menu" => "home",

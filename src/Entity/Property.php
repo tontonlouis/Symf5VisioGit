@@ -24,6 +24,7 @@ class Property
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var int $id
      */
     private $id;
 

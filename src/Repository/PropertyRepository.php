@@ -59,7 +59,7 @@ class PropertyRepository extends ServiceEntityRepository
     /**
      * @return Property[] Returns an array of Property objects
      */
-    public function findLastProperty()
+    public function findLastProperty(): array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.sold = :val')

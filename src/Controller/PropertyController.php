@@ -11,6 +11,7 @@ use App\Notification\ContactNotification;
 use App\Repository\PropertyRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
@@ -28,7 +29,7 @@ class PropertyController extends AbstractController
      /**
       * @Route("/buy", name="property_index")
       */
-     public function index(PaginatorInterface $paginator, Request $request)
+     public function index(PaginatorInterface $paginator, Request $request): Response
      {
           $search = new PropertySearch();
           $form = $this->createForm(PropertySearchType::class, $search);
@@ -55,7 +56,7 @@ class PropertyController extends AbstractController
      /**
       * @Route("/property/{slug}-{id}", name="property_show", requirements={"slug"= "[a-z0-9\-]*"})
       */
-     public function show(string $slug, Property $property, Request $request, ContactNotification $notification)
+     public function show(string $slug, Property $property, Request $request, ContactNotification $notification): Response
      {
           if($property->getSlug() !== $slug)
           {
