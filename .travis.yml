@@ -1,2 +1,6 @@
 language: php
-install: public/assets vendor/autoload.php
+php:
+  - '7.4'
+install:
+  - composer install
+  - php vendor/autoload.php
