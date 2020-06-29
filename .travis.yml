@@ -1,0 +1,2 @@
+language: php
+install: public/assets vendor/autoload.php
