@@ -1,6 +1,0 @@
-language: php
-php:
-  - '7.4'
-install:
-  - composer install
-  - php vendor/autoload.php
